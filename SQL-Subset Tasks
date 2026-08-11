@@ -1,0 +1,51 @@
+create database task2;
+use task2;
+
+create table employees (id int, name varchar(50), age int, department varchar(15), salary int);
+
+create table students (student_id int, student_name varchar(15), course varchar(20), marks int);
+
+
+1.DDL (Data Definition Language) – Structure of Database
+
+alter table employees add email varchar(50);
+alter table employees modify salary decimal(10,2);
+alter table employees rename column name to employee_name;
+alter table employees drop column age;
+rename table students to College_students;
+truncate table employees;
+select * from employees;
+drop table College_students;
+select * from College_students;
+
+
+2.DML (Data Manipulation Language) – Data Handling
+
+insert into employees values(1, 'Yash', 'IT', 45000.00, 'yash@gmail.com'),(2, 'Ash', 'HR', 38000.00, 'ash@gmail.com'),
+(3, 'Franklin', 'Finance', 52000.00, 'franklin@gmail.com'),(4, 'Angel', 'IT', 48000.00, 'angel@gmail.com'),
+(5, 'Sanjana', 'Sales', 42000.00, 'sanjana@gmail.com');
+alter table employees add age int;
+insert into employees (employee_name,age, department, salary) values('Arun', 27, 'IT', 45000);
+update employees set salary=50000 where id=3;
+set sql_safe_updates=0;
+update employees set salary = salary * 1.10 where department = 'HR';
+select * from employees where department = 'HR';
+update employees set department = 'Finance' where employee_name = 'Ash';
+select * from employees where employee_name = 'Ash';
+select * from employees;
+delete from employees where salary < 25000;
+select * from employees;
+delete from employees where id=5;
+
+
+3.DQL (Data Query Language) – Data Retrieval
+
+select * from employees;
+select employee_name, salary from employees;
+select * from employees where department = 'IT';
+select * from employees where salary > 40000;
+select * from employees where age > 25;
+select * from employees where employee_name like 'A%';
+select * from employees where salary between 30000 and 50000;
+select * from employees order by salary asc;
+select * from employees order by salary desc;
