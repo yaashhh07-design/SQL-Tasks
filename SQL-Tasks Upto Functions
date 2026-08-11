@@ -1,0 +1,69 @@
+create database IT;
+use IT;
+
+create table employees (id int,name varchar(15),age int,department varchar(15),salary int,joining_date date);
+
+describe employees;
+
+insert into employees values
+(106, 'Arun', 25, 'HR', 39000, '2023-05-12'),
+(107, 'Priya', 28, 'Finance', 55000, '2022-07-18'),
+(108, 'Kavin', 23, 'IT', 47000, '2024-02-14'),
+(109, 'Meena', 31, 'Sales', 62000, '2021-11-09'),
+(110, 'Rahul', 26, 'Marketing', 43000, '2023-08-21'),
+(111, 'Anu', 24, 'HR', 37000, '2024-04-10'),
+(112, 'Vijay', 29, 'IT', 50000, '2022-09-15'),
+(113, 'Divya', 27, 'Finance', 58000, '2023-01-05'),
+(114, 'Ravi', 35, 'Sales', 65000, '2020-12-12'),
+(115, 'Nisha', 22, 'Marketing', 40000, '2025-03-18'),
+(116, 'Ajay', 30, 'IT', 54000, '2021-06-22'),
+(117, 'Keerthi', 26, 'HR', 42000, '2023-10-30'),
+(118, 'Surya', 28, 'Finance', 56000, '2022-02-17'),
+(119, 'Pooja', 24, 'IT', 46000, '2024-07-01'),
+(120, 'Hari', 33, 'Sales', 61000, '2021-09-25'),
+(121, 'Sneha', 25, 'Marketing', 44000, '2023-11-11'),
+(122, 'Mohan', 29, 'IT', 51000, '2022-05-08'),
+(123, 'Latha', 27, 'Finance', 59000, '2021-10-19'),
+(124, 'Deepak', 32, 'HR', 48000, '2020-08-14'),
+(125, 'Riya', 23, 'Marketing', 41000, '2025-02-28');
+
+select * from employees;
+select name,salary from employees;
+select * from employees where department="IT";
+select * from employees where salary>40000;
+select * from employees where age<30;
+
+select * from employees where salary between 30000 and 60000;
+select * from employees where department in ("HR","IT");
+select * from employees where name like 'A%';
+select * from employees where name like '%n';
+select * from employees where age!=25;
+
+select * from employees order by name;
+select * from employees order by name desc;
+select * from employees order by age asc,salary;
+select * from employees order by name asc;
+
+select max(salary) as Maximum_Salary from employees;
+select min(salary) as Minimum_Salary from employees;
+select  name,avg(salary) as Average_Salary from employees group by name;
+select sum(salary) as Total_Salary from employees;
+select count(*) from employees as Total_count;
+
+select  department,sum(salary) as Total_Salary from employees group by department;
+select  department,avg(salary) as Average_Salary from employees group by department;
+select  department,count(*) as Total_Count_From_Each_Department from employees group by department;
+select  department,min(salary) as Minimum_Salary from employees group by department;
+select  department,max(salary) as Maximum_Salary from employees group by department;
+
+select  department,sum(salary) as Total_Salary from employees group by department having sum(salary)>100000;
+select  department,avg(salary) as Average_Salary from employees group by department having avg(salary)>40000;
+select  department,count(*) as Total_Count_From_Each_Department from employees group by department having count(*)>3;
+
+use IT;
+
+select upper(name) as Upper_Case from employees;
+select lower(name) as Lower_Case from employees;
+select length(name) as Length_of_EmployeeName from employees;
+select left(name,3) as First_3_OfEachEmployee from employees;
+select concat(name,"  -->  ",department) as Concatination_of_NameDepartment from employees;
