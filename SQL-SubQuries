@@ -1,0 +1,47 @@
+create database ex;
+use ex;
+
+create table employee (id int,name varchar(15),age int,department varchar(15),salary int,joining_date date);
+
+insert into employee values
+(106, 'Arun', 25, 'HR', 39000, '2023-05-12'),
+(107, 'Priya', 28, 'Finance', 55000, '2022-07-18'),
+(108, 'Kavin', 23, 'IT', 47000, '2024-02-14'),
+(109, 'Meena', 31, 'Sales', 62000, '2021-11-09'),
+(110, 'Rahul', 26, 'Marketing', 43000, '2023-08-21'),
+(111, 'Anu', 24, 'HR', 37000, '2024-04-10'),
+(112, 'Vijay', 29, 'IT', 50000, '2022-09-15'),
+(113, 'Divya', 27, 'Finance', 58000, '2023-01-05'),
+(114, 'Ravi', 35, 'Sales', 65000, '2020-12-12'),
+(115, 'Nisha', 22, 'Marketing', 40000, '2025-03-18'),
+(116, 'Ajay', 30, 'IT', 54000, '2021-06-22'),
+(117, 'Keerthi', 26, 'HR', 42000, '2023-10-30'),
+(118, 'Surya', 28, 'Finance', 56000, '2022-02-17'),
+(119, 'Pooja', 24, 'IT', 46000, '2024-07-01'),
+(120, 'Hari', 33, 'Sales', 61000, '2021-09-25'),
+(121, 'Sneha', 25, 'Marketing', 44000, '2023-11-11'),
+(122, 'Mohan', 29, 'IT', 51000, '2022-05-08'),
+(123, 'Latha', 27, 'Finance', 59000, '2021-10-19'),
+(124, 'Deepak', 32, 'HR', 48000, '2020-08-14'),
+(125, 'Riya', 23, 'Marketing', 41000, '2025-02-28');
+
+select name,department from employee where department in(select department from employee where department='HR');
+select name,department from employee where department not in(select department from employee where department='HR');
+
+
+select e1.name,e1.department from employee e1 where exists(select 1 from employee e2 
+where e2.department=e1.department and e2.department='HR');
+select e3.name,e3.department from employee e3 where not exists(select 1 from employee e4
+where e4.department=e3.department and e4.department='HR');
+
+
+select * from employee where salary < Any(select salary from employee where age>30);
+select * from employee where salary < all(select salary from employee where age<40);
+
+
+select * from employee where salary=(select max(salary) from employee);
+select * from employee where salary=(select min(salary) from employee);
+
+
+select * from employee where department in(select department from employee where department='HR');
+select * from employee where department > all(select department from employee where department='HR');
