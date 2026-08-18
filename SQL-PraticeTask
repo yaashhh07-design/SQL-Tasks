@@ -1,0 +1,177 @@
+create database pt;
+use pt;
+
+create table student (studentid int,name varchar(50),age int,city varchar(50),courseid int,marks int);
+
+create table course (courseid int,coursename varchar(50),duration int,fee int);
+
+create table faculty (facultyid int,facultyname varchar(50),courseid int);
+
+create table alumni (studentid int,name varchar(50),city varchar(50));
+
+insert into course values
+(101, 'Java', 90, 30000),
+(102, 'Python', 60, 25000),
+(103, 'C++', 75, 28000),
+(104, 'Web Development', 120, 35000),
+(105, 'Data Science', 180, 50000),
+(106, 'SQL', 45, 20000);
+
+insert into student values
+(1, 'Arun', 20, 'Chennai', 101, 85),
+(2, 'Karan', 21, 'Coimbatore', 102, 72),
+(3, 'Varun', 19, 'Madurai', 103, 90),
+(4, 'Anand', 22, 'Chennai', 104, 95),
+(5, 'Bharath', 20, 'Salem', 105, 68),
+(6, 'John', 23, 'Coimbatore', 101, 80),
+(7, 'Arjun', 18, 'Chennai', 106, 60),
+(8, 'Rohan', 21, 'Madurai', 102, 50),
+(9, 'Kevin', 22, 'Salem', 103, 88),
+(10, 'Aishwarya', 19, 'Chennai', 105, 76);
+
+insert into faculty values
+(201, 'John', 101),
+(202, 'Priya', 102),
+(203, 'David', 103),
+(204, 'Anitha', 104),
+(205, 'Robert', 105),
+(206, 'Kumar', 106);
+
+insert into alumni values
+(11, 'Arun', 'Chennai'),
+(12, 'Suresh', 'Coimbatore'),
+(13, 'Priya', 'Madurai'),
+(14, 'Karan', 'Salem'),
+(15, 'Deepak', 'Chennai'),
+(16, 'Meena', 'Erode');
+
+select * from student where marks>80;
+select * from student where age between 18 and 22;
+select * from student where city='Chennai' or 'Coimbatore';
+select * from student where marks!=50;
+select * from student where name like 'A%';
+select * from student where name like '%n';
+select * from student where name like '%Ar%';
+select * from student where marks in (60,70,80,90);
+select * from student where city not in ('Madurai','Salem');
+select * from student where marks between 70 and 90 and city= 'Chennai';
+
+
+select upper(name) from student;
+select lower(name) from student;
+select name, length(name) as name_length from student;
+select name, left(name, 3) as first_3_characters from student;
+select city, replace(city, 'Chennai', 'Chennai City') as new_city from student;
+
+select count(*) from student;
+select avg(marks) from student;
+select max(marks) from student;
+select min(fee) from course;
+select sum(fee) from course;
+
+
+-- 1. create student table with primary key
+create table student1 (studentid int primary key,name varchar(50),age int,city varchar(50),courseid int,marks int);
+
+-- 2. create course table with unique coursename
+create table course1 (courseid int primary key,coursename varchar(50) unique,duration int,fee int);
+
+-- 3. make student name not null
+create table student2 (studentid int primary key,name varchar(50) not null,age int,city varchar(50),courseid int,marks int);
+
+-- 4. check marks between 0 and 100
+create table student3 (studentid int primary key,name varchar(50) not null,age int,city varchar(50),courseid int,marks int check (marks between 0 and 100));
+
+-- 5. set default city as chennai
+create table student4 (studentid int primary key,name varchar(50) not null,age int,city varchar(50) default 'Chennai',courseid int,marks int);
+
+-- 6. add foreign key between student and course
+create table course2 (courseid int primary key,coursename varchar(50),duration int,fee int);
+create table student5 (studentid int primary key,name varchar(50) not null,age int,city varchar(50) default 'Chennai',courseid int,
+	marks int check (marks between 0 and 100),
+	foreign key (courseid) references course2(courseid));
+
+-- 7. insert duplicate courseid
+insert into course2 values(101, 'Java', 90, 30000);
+insert into course2 values(101, 'Python', 60, 25000);
+
+-- 8. insert null into name
+insert into student5 values(1, null, 20, 'Chennai', 101, 85);
+
+-- 9. insert marks = 120
+insert into student5 values(2, 'Arun', 20, 'Chennai', 101, 120);
+
+-- 10. delete a course referenced by student
+insert into course2 values(102, 'Python', 60, 25000);
+insert into student5 values(3, 'Karan', 21, 'Coimbatore', 102, 75);
+delete from course2 where courseid = 102;
+
+use pt;
+select s.name,c.coursename from student s inner join course c on s.courseid=c.courseid;
+select s.name,c.coursename,c.fee from student s inner join course c on s.courseid=c.courseid;
+select s.name,f.facultyname from student s inner join faculty f on s.courseid=f.courseid;
+
+select s.name,c.coursename from student s left join course c on s.courseid=c.courseid;
+select c.coursename,s.name from course c left join student s on c.courseid=s.courseid;
+
+select c.coursename,s.name from course c right join student s on c.courseid=s.courseid;
+
+select s.name,c.coursename from student s left join course c on s.courseid=c.courseid 
+union
+select s.name,c.coursename from student s right join course c on s.courseid=c.courseid;
+
+select s.name,c.coursename,f.facultyname from student s inner join course c on s.courseid=c.courseid 
+inner join faculty f on s.courseid=f.courseid;
+select s.name,c.coursename,f.facultyname from student s inner join course c on s.courseid=c.courseid 
+inner join faculty f on s.courseid=f.courseid where c.coursename='Java';
+select s.name,c.coursename,f.facultyname from student s inner join course c on s.courseid=c.courseid 
+inner join faculty f on s.courseid=f.courseid where f.facultyname='John';
+
+select s.name,c.coursename,c.fee from student s inner join course c on s.courseid=c.courseid where c.fee>30000;
+select s.name,c.coursename,c.fee,c.duration from student s inner join course c on s.courseid=c.courseid where c.duration>90;
+
+select s.*, c.coursename from student s join course c on s.courseid = c.courseid order by c.coursename;
+select f.facultyname, count(s.studentid) as total_students from faculty f join student s on f.courseid = s.courseid
+group by f.facultyid, f.facultyname;
+select c.coursename, count(s.studentid) as total_students from course c left join student s on c.courseid = s.courseid
+group by c.courseid, c.coursename order by total_students desc limit 1;
+
+
+
+select name from student
+union
+select name from alumni;
+
+select city from student
+union
+select city from alumni;
+
+select city from student
+union all
+select city from alumni;
+
+select studentid, name from student
+union
+select studentid, name from alumni;
+
+select name, city from student
+where city = 'Chennai'
+union
+select name, city from alumni
+where city = 'Chennai';
+
+select name from student
+union
+select name from alumni order by name;
+
+select count(*) as total_records
+from (
+    select name from student
+    union
+    select name from alumni) as result;
+    
+select name from student where name in (select name from alumni);
+
+select name from student where name not in (select name from alumni);
+
+select name from alumni where name not in (select name from student);
